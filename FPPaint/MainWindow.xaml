@@ -1,0 +1,302 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FPPaint"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="FPPaint.MainWindow"
+        mc:Ignorable="d"
+        Title="FPPaint" Height="645" Width="900" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True" x:Name="mainWindow" Icon="Assets/pencil.png">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.NewFileCommand}" Executed="NewFile" />
+        <CommandBinding Command="{x:Static local:MainWindow.OpenFileCommand}" Executed="OpenFile" />
+        <CommandBinding Command="{x:Static local:MainWindow.SaveFileAsCommand}" Executed="SaveAsFile" />
+        <CommandBinding Command="{x:Static local:MainWindow.UndoCommand}" Executed="Undo_Click" />
+        <CommandBinding Command="{x:Static local:MainWindow.RedoCommand}" Executed="Redo_Click" />
+
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedPencil}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedLine}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedEllipse}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedRectangle}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedErasor}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedFill}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedEllipseFilled}" Executed="CommandBindingShape_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.SelectedRectangleFilled}" Executed="CommandBindingShape_Executed"/>
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Command="{x:Static local:MainWindow.NewFileCommand}" Gesture="CTRL+N" />
+        <KeyBinding Command="{x:Static local:MainWindow.OpenFileCommand}" Gesture="CTRL+O" />
+        <KeyBinding Command="{x:Static local:MainWindow.SaveFileAsCommand}" Gesture="CTRL+S" />
+        <KeyBinding Command="{x:Static local:MainWindow.UndoCommand}" Gesture="CTRL+Z" />
+        <KeyBinding Command="{x:Static local:MainWindow.RedoCommand}" Gesture="CTRL+SHIFT+Z" />
+    </Window.InputBindings>
+    <Grid x:Uid="PaintDockPanel" x:Name="paintDockPanel" >
+        <Grid.Background>
+            <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InactiveCaptionColorKey}}"/>
+        </Grid.Background>
+        <ToolBarTray VerticalAlignment="Top" Height="30">
+            <ToolBar x:Name="toolBarFileOptions" MinWidth="99">
+                <ToolBar.Background>
+                    <SolidColorBrush Color="#FFF4F7FC"/>
+                </ToolBar.Background>
+                <Button Click="NewFile" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        New File
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/newFile.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Click="OpenFile" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Open File
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/openFile.png"/>
+                    </Button.Background>
+                </Button>
+                <Button Click="SaveAsFile" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Save File As
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/saveFileAs.png"/>
+                    </Button.Background>
+                </Button>
+            </ToolBar>
+            <ToolBar x:Name="toolBarHistory" HorizontalAlignment="Left" MinWidth="74" >
+
+                <Button x:Name="undoBtn" Click="Undo_Click" Style="{StaticResource MyButton}" IsEnabled="False" >
+                    <Button.ToolTip>
+                        Undo
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/Undo-icon.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="redoBtn" Click="Redo_Click" Style="{StaticResource MyButton}" IsEnabled="False">
+                    <Button.ToolTip>
+                        Redo
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/Redo-icon.png"/>
+                    </Button.Background>
+                </Button>
+            </ToolBar>
+            <ToolBar x:Name="toolBarShapes" MinWidth="100">
+                <ToolBar.Background>
+                    <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.InactiveBorderColorKey}}"/>
+                </ToolBar.Background>
+                <RadioButton IsChecked="true" Command="{x:Static local:MainWindow.SelectedPencil}" Style="{StaticResource toggleStyle}" GroupName="groupShapes" x:Name="btnPencil">
+                    <RadioButton.ToolTip>
+                        Pencil
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/pencil.png" Opacity="0.5"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/pencil.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedLine}" Style="{StaticResource toggleStyle}" x:Name="btnLine">
+                    <RadioButton.ToolTip>
+                        Line
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/line.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/line.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedEllipse}" Style="{StaticResource toggleStyle}" x:Name="btnEllipse">
+                    <RadioButton.ToolTip>
+                        Ellipse
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/ellipse.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/ellipse.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedRectangle}" Style="{StaticResource toggleStyle}" x:Name="btnRectangle">
+                    <RadioButton.ToolTip>
+                        Rectangle
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/rectangle.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/rectangle.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedErasor}" Style="{StaticResource toggleStyle}" x:Name="btnErasor" ClickMode="Press">
+                    <RadioButton.ToolTip>
+                        Erasor
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/erasor.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/erasor.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedFill}" Style="{StaticResource toggleStyle}" x:Name="btnFill">
+                    <RadioButton.ToolTip>
+                        Fill
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/fill.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/fill.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedEllipseFilled}" Style="{StaticResource toggleStyle}" x:Name="btnEllipseFilled">
+                    <RadioButton.ToolTip>
+                        Ellipse Filled
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/ellipseFilled.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/ellipseFilled.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+                <RadioButton GroupName="groupShapes" Command="{x:Static local:MainWindow.SelectedRectangleFilled}" Style="{StaticResource toggleStyle}" x:Name="btnRectangleFilled">
+                    <RadioButton.ToolTip>
+                        Rectangle Filled
+                    </RadioButton.ToolTip>
+                    <RadioButton.OpacityMask>
+                        <ImageBrush ImageSource="Assets/rectangleFilled.png"/>
+                    </RadioButton.OpacityMask>
+                    <RadioButton.Background>
+                        <ImageBrush ImageSource="Assets/rectangleFilled.png"/>
+                    </RadioButton.Background>
+                </RadioButton>
+
+            </ToolBar>
+            <ToolBar x:Name="toolBarCommands">
+                <Button x:Name="btnFlipHorizontally" Click="btnFlipHorizontally_Click" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Flip Horizontally
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/flipHorizontally.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnFlipVertically" Click="btnFlipVertically_Click" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Flip Vertically
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/flipVertically.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnRotateCw90" Click="btnRotateCw90_Click" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Rotate Clockwise 90 Degrees
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/rotateCw90.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnRotateCcw90" Click="btnRotateCcw90_Click" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Rotate Counter Clockwise 90 Degrees
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/rotateCcw90.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnRotate180" Click="btnRotate180_Click" Style="{StaticResource MyButton}">
+                    <Button.ToolTip>
+                        Rotate 180 Degrees
+                    </Button.ToolTip>
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/rotate180.png"/>
+                    </Button.Background>
+                </Button>
+            </ToolBar>
+            <ToolBar x:Name="toolBarColors" MinWidth="94">
+                <Button x:Name="btnBrushColor" Content="Brush Color" Click="btnBrushColor_Click" Canvas.Left="10" Width="70" Height="25" Style="{StaticResource MyButton}" Foreground="White">
+                    <Button.ToolTip>
+                        Brush Color
+                    </Button.ToolTip>
+                </Button>
+            </ToolBar>
+            <ToolBar>
+                <DockPanel Height="25">
+                    <TextBox Text="{Binding ElementName=sliderBrushThicknessValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" TextAlignment="Right" Width="20" VerticalAlignment="Center" HorizontalAlignment="Center" Height="18" ToolTip="Brush Thickness"/>
+                    <Slider Minimum="1" Maximum="35" TickFrequency="1" IsSnapToTickEnabled="True" Name="sliderBrushThicknessValue" Width="70" ValueChanged="sliderBrushThicknessValue_ValueChanged" Value="2" ToolTip="Brush Thickness" VerticalAlignment="Center" HorizontalAlignment="Center" Height="18"/>
+                </DockPanel>
+            </ToolBar>
+            <ToolBar>
+                <Button x:Name="btnResizeWindow" Click="btnResizeWindow_Click" Style="{StaticResource MyButton}" ToolTip="Image Resize">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/resize.png"/>
+                    </Button.Background>
+                </Button>
+                <Button x:Name="btnCropWindow" Click="btnCropWindow_Click" Style="{StaticResource MyButton}" ToolTip="Image Crop">
+                    <Button.Background>
+                        <ImageBrush ImageSource="Assets/crop.png"/>
+                    </Button.Background>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Margin="4,34,0,22">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <StackPanel ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" CanVerticallyScroll="True" CanHorizontallyScroll="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" >
+                    <Grid x:Name="gridParentCanvasDrawingSurface" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid.Effect>
+                            <DropShadowEffect Direction="313" Opacity="0.2" BlurRadius="4"/>
+                        </Grid.Effect>
+                        <Canvas Grid.RowSpan="2" x:Name="canvasDrawingSurface" Height="499" VerticalAlignment="Top" Width="813" HorizontalAlignment="Left" MouseDown="canvas_MouseDown" MouseUp="canvas_MouseUp" MouseMove="canvas_MouseMove" MouseLeave="canvas_MouseLeave" Background="White" SizeChanged="canvasDrawingSurface_SizeChanged" ClipToBounds="True">
+                            <Canvas.Effect>
+                                <DropShadowEffect Direction="313" Opacity="0.2" BlurRadius="4"/>
+                            </Canvas.Effect>
+                        </Canvas>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <StatusBar x:Uid="StatusBar" x:Name="_StatusBar" VerticalAlignment="Bottom" Height="22">
+            <StatusBarItem x:Uid="StatusBarItem_1" Padding="0">
+                <Grid x:Uid="Grid_1">
+                    <TextBlock
+						x:Uid="TextBlock_1"
+						Margin="0,0,-78,0"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Left"
+						x:Name="statusBarTextCurrentPx" Width="100" ToolTip="Mouse Coordinates"
+                    ><Run Text="X,Y: "/></TextBlock>
+                </Grid>
+            </StatusBarItem>
+            <StatusBarItem x:Uid="StatusBarItem_CanvasSize" Padding="0">
+                <Grid x:Uid="Grid_1">
+                    <TextBlock
+						x:Uid="TextBlock_1"
+						Margin="100 0 0 0"
+						VerticalAlignment="Center"
+						HorizontalAlignment="Right"
+						Grid.Column="1"
+						x:Name="statusBarText_CanvasSize" ToolTip="Image Size Pixels"
+                    ><Run Text="Size: "/></TextBlock>
+                </Grid>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right" Width="200" Padding="0">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="75*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="labelZoom" Grid.Column="0" ToolTip="Zoom" Width="30" Padding="0"/>
+                    <Slider x:Name="sliderZoom" Grid.Column="1" ToolTip="Zoom" Value="100" Minimum="10" Maximum="500" TickFrequency="25" Width="150" HorizontalAlignment="Right" Grid.ColumnSpan="2" ValueChanged="sliderZoom_ValueChanged" Padding="0"/>
+                </Grid>
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
+
+</Window>

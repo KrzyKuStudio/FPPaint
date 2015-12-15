@@ -1,0 +1,16 @@
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\bin\Debug\FPPaint.exe.config
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\bin\Debug\FPPaint.exe
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\bin\Debug\FPPaint.pdb
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\bin\Debug\FPPaint.Lib.dll
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\bin\Debug\FPPaint.Lib.pdb
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint.csprojResolveAssemblyReference.cache
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\MainWindow.g.cs
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\App.g.cs
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint_MarkupCompile.cache
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint_MarkupCompile.lref
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\MainWindow.baml
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint.g.resources
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint.Properties.Resources.resources
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint.csproj.GenerateResource.Cache
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint.exe
+J:\PROJEKTY\FUTURE PROCESSING\FPPaint\FPPaint\obj\Debug\FPPaint.pdb
