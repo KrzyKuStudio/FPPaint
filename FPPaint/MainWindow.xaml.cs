@@ -17,9 +17,6 @@ using System.Runtime.InteropServices;
 using FPPaint;
 using System.ComponentModel;
 
-// TODO - kolejnym pokręconym obszarem jest obsługa plików: jest interfejs IMyFile, implementowany przez klasę MyFile, a po tej klasie dziedziczy jeszcze klasa MyImage i ciężko w ogóle wymyślić co jest odpowiedzialnością której klasy. Wygląda to trochę tak, jakby Autor chciał się pochwalić znajomością słów "abstract" i "virtual", nie zastanawiając się nad tym czy ten kod ma sens.
-// TODO radio butons better syle
-
 namespace FPPaint
 {
     /// <summary>
